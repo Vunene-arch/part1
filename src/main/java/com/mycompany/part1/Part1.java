@@ -4,6 +4,7 @@
 
 package com.mycompany.part1;
 
+import StoredMessages.StoredMessages;
 import java.util.Scanner;
 
 /**
@@ -153,12 +154,12 @@ public class Part1 {
         scanner.close();
     }
     public static void runQuickChat(Scanner scanner) {
-
+     //welcome user to the quickchart
     System.out.println("\nWelcome to QuickChat.");
 
     System.out.print("How many messages do you want to enter? ");
     int numberOfMessages = Integer.parseInt(scanner.nextLine());
-
+         //while loop to ask fot number of messages 
     while (numberOfMessages < 1) {
 
         System.out.print("Please enter at least 1 message: ");
@@ -174,10 +175,11 @@ public class Part1 {
         System.out.println("1) Send Messages");
         System.out.println("2) Show recently sent messages");
         System.out.println("3) Quit");
+        System.out.println("4) Stored Messages");
         System.out.print("Choose an option: ");
 
         String choice = scanner.nextLine();
-
+      // if statement for choices
         if (choice.equals("1")) {
 
             if (messagesProcessed < numberOfMessages) {
@@ -201,7 +203,8 @@ public class Part1 {
             running = false;
             System.out.println("Thank you for using QuickChat.");
 
-        } else {
+        } else if (choice.equals("4")) {
+            StoredMessages.showStoredMenu(scanner);
 
             System.out.println(
                     "Invalid option. Please select 1, 2 or 3."
@@ -209,6 +212,7 @@ public class Part1 {
         }
     }
 }
+    //mehod for messageid
     public static void processMessage(Scanner scanner, int messageNumber) {
 
     String messageID = Message.createMessageID();
@@ -225,7 +229,7 @@ public class Part1 {
             recipient,
             messageText
     );
-
+         //while loop to check recipient cellphone number
     while (!message.checkRecipientCell().equals(
             "Cell phone number successfully captured.")) {
 
@@ -281,7 +285,16 @@ public class Part1 {
         System.out.println("Message disregarded.");
 
     } else if (action.equals("2")) {
+     //Saving message in arrays
+    int flag = 0;
+    if (action.equals("1")) flag = 1; // Sent
+    else if (action.equals("0")) flag = 2; // Disregarded
+    else if (action.equals("2")) flag = 3; // Stored
 
+if (flag != 0) {
+    StoredMessages.addMessage("You", message.getRecipient(), message.getMessage(),
+        message.getMessageHash(), message.getMessageID(), flag);
+}
     if (action.equals("1")) {
     System.out.println(message.sentMessage(1));
     System.out.println("Message ID: " + message.getMessageID());
